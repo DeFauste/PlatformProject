@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using PlatformService.AsyncDataServices;
 using PlatformService.Data;
 using PlatformService.SyncDataServices.Http;
 using System.Runtime.ConstrainedExecution;
@@ -27,6 +28,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 builder.Configuration.AddJsonFile("appsettings.json");
 Console.WriteLine($"--> CommandService Endpoint {builder.Configuration["CommandService"]}");
+builder.Services.AddSingleton<IMessageBusClient, MessageBusClient>();
 #endregion
 var app = builder.Build();
 
