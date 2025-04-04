@@ -1,6 +1,7 @@
 using CommandService.AsyncDataServices;
 using CommandService.Data;
 using CommandService.EventProcessing;
+using CommandService.SyncDataServices.Grpc;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -19,6 +20,7 @@ builder.Services.AddScoped<ICommandRepo, CommandRepo>();
 builder.Services.AddHostedService<MessegeBusSubscriber>();
 
 builder.Services.AddSingleton<IEventProcessor, EventProcessor>();
+builder.Services.AddScoped<IPlatformDataClient, PlatformDataClient>();
 //
 
 var app = builder.Build();
@@ -29,9 +31,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+PrepDb.PrepPopulation(app);
+
 app.UseDeveloperExceptionPage();
 
 app.UseRouting();
+app.UseAuthorization();
 
 app.UseEndpoints(endpoints =>
 {
@@ -39,6 +44,7 @@ app.UseEndpoints(endpoints =>
 });
 
 //app.UseHttpsRedirection();
-
+// Prepare the database with initial data
 app.Run();
+
 

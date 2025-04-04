@@ -22,6 +22,7 @@ namespace CommandService.EventProcessing
             switch (eventType)
             {
                 case EventType.PlatformPublished:
+                    Console.WriteLine($"--> We have sent {messege}");
                     AddPlatform(messege);
                     break;
                 default:
